@@ -25,7 +25,7 @@ public class ArcadeDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double throttle = 1.0 - (0.5 * Robot.oi.getMainRightTrigger());
+    double throttle = 0.9 - (0.55 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
     SmartDashboard.putNumber("LeftJoy Y", Robot.oi.getMainLeftJoyY());
     SmartDashboard.putNumber("RightJoy X", Robot.oi.getMainRightJoyX());

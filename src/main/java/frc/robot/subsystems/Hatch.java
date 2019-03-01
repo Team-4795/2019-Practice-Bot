@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsytems;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -26,7 +26,8 @@ public class Hatch extends Subsystem {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
 
     Robot.initTalon(hatchMotor);
-    hatchMotor.configOpenloopRamp(0.0);
+    this.setRamp(0.0);
+    this.set(0.0);
   }
 
   public void setRamp(double rate) {
@@ -34,7 +35,7 @@ public class Hatch extends Subsystem {
   }
 
   public void set(double speed) {
-    hatchMotor.set(ControlMode.PercentOutput, -speed);
+    hatchMotor.set(ControlMode.PercentOutput, speed);
   }
   @Override
   public void initDefaultCommand() {

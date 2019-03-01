@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveForward;
-import frc.robot.subsytems.Hatch;
-import frc.robot.subsytems.Drivebase;
+import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.Drivebase;
 
 /**
  * This is a demo program showing the use of the RobotDrive class, specifically
@@ -40,13 +40,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    Scheduler.getInstance().add(new DriveForward(0.4));;
+    //Scheduler.getInstance().add(new DriveForward(0.4));;
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
   }
+  
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();

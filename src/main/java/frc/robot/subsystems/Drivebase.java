@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsytems;
+package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -57,11 +57,9 @@ public class Drivebase extends Subsystem {
 
     rightMotorOne.setInverted(true);
 
-    rightMotorTwo.setInverted(true);
     rightMotorThree.setInverted(true);
 
-    leftMotorTwo.setInverted(true);
-    leftMotorThree.setInverted(true);
+ 
 
     leftMotorTwo.follow(leftMotorOne);
     leftMotorThree.follow(leftMotorOne);
