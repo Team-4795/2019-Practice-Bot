@@ -40,7 +40,7 @@ public class OI {
       BButton = new JoystickButton(MAIN_CONTROLLER, 2);
       ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
       ArmBButton = new JoystickButton(ARM_CONTROLLER, 2);
-  
+
     }
   
     //Drivebase control
@@ -79,7 +79,14 @@ public class OI {
     public boolean getMainAButton() {
       return MAIN_CONTROLLER.getRawButton(1);
     }
+
+    public boolean getMainBButtonPressed() {
+      return MAIN_CONTROLLER.getRawButtonPressed(2);
+    }
   
+    public boolean getMainLeftBumper() {
+      return MAIN_CONTROLLER.getRawButton(5);
+    }
     public boolean getMainAButtonPressed() {
       return MAIN_CONTROLLER.getRawButtonPressed(1);
     }

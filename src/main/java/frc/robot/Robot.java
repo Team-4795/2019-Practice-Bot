@@ -13,11 +13,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.ManualHatchControl;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Drivebase;
 
@@ -30,12 +33,32 @@ public class Robot extends TimedRobot {
   public static Drivebase drivebase;
   public static OI oi;
   public static Hatch hatch;
+  private UsbCamera hatchCam;
 
   @Override
   public void robotInit() {
     drivebase = new Drivebase();
     oi = new OI();
     hatch = new Hatch();
+    hatchCam = CameraServer.getInstance().startAutomaticCapture(0);
+    CameraServer.getInstance().addCamera(hatchCam);
+
+    /*hatchCam.setVideoMode(PixelFormat.kRGB565, 360, 240, 25);
+    //SmartDashboard.putBoolean("set hatch res", Robot.hatchCam.setResolution(4, 3));
+    //Robot.hatchCam.setResolution(16, 12);
+    hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    hatchCam.setExposureHoldCurrent();
+    hatchCam.setWhiteBalanceHoldCurrent();
+    Robot.switcher.setSource(Robot.hatchCam);
+
+    CameraServer.getInstance().startAutomaticCapture(0);*/
+
+  }
+
+  @Override
+  public void disabledInit() {
+    Robot.hatch.servoUp = true;
+    Robot.hatch.hatchUp = false;
   }
 
   @Override

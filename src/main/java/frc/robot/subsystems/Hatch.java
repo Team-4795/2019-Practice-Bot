@@ -12,7 +12,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.HatchTest;
 import frc.robot.commands.ManualHatchControl;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -21,19 +24,30 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Hatch extends Subsystem {
   public final TalonSRX hatchMotor;
+  private final Servo armLeft;
+  private final Servo armRight;
+  public boolean servoUp = true;
+  public boolean hatchUp = false;
 
   public Hatch() {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
+    armLeft = new Servo(RobotMap.SERVO_ONE.value);
+    armRight = new Servo(RobotMap.SERVO_TWO.value);
 
     Robot.initTalon(hatchMotor);
-    this.setRamp(0.0);
-    this.set(0.0);
+    hatchMotor.configOpenloopRamp(0.0);
   }
 
   public void setRamp(double rate) {
     hatchMotor.configOpenloopRamp(rate);
   }
 
+  public void setServoUp(boolean setServoUp) {
+    double posLeft = setServoUp ? 0.915 : 0.55;
+    double posRight = setServoUp ? 0.125 : 0.5;
+    armLeft.set(posLeft);
+    armRight.set(posRight);
+  }
   public void set(double speed) {
     hatchMotor.set(ControlMode.PercentOutput, speed);
   }

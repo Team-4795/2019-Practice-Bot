@@ -9,9 +9,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 
 public class ArcadeDrive extends Command {
+  boolean cameraToggle = false;
+
   public ArcadeDrive() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivebase);
@@ -31,6 +34,10 @@ public class ArcadeDrive extends Command {
     SmartDashboard.putNumber("RightJoy X", Robot.oi.getMainRightJoyX());
     Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
 
+    if (Robot.oi.getMainAButtonPressed()) {
+      cameraToggle = !cameraToggle;
+      NetworkTableInstance.getDefault().getEntry("CamID").setNumber(cameraToggle ? 0 : 1);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

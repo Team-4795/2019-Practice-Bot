@@ -15,6 +15,9 @@ public enum RobotMap {
     //Controller Mappings
     MAIN_CONTROLLER(0),
     ARM_CONTROLLER(1),
+    // PWM Mappings
+    SERVO_ONE(8),
+    SERVO_TWO(9),
     //CAN Motor Controller Mappings
     LEFT_MOTOR_ONE(1),
     LEFT_MOTOR_TWO(2),
