@@ -8,34 +8,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
+import frc.robot.triggers.DrivetrainOverride;
 
-public class DriveForward extends Command {
+public class DriveForward extends InstantCommand {
 
-  private double speed;
+  private double feet;
 
-  public DriveForward(double speed) {
+  public DriveForward(double feet) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivebase);
-    this.speed = speed;
-    setTimeout(1.0);
+    this.feet = feet;
+    setTimeout(5.0);
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-  }
-
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.drivebase.setMotors(speed, speed);
+    Robot.drivebase.driveFeet(feet);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return Robot.oi.drivetrainOverride.get() || isTimedOut() || Math.abs(Robot.drivebase.getLeftEnc() - (feet * Robot.drivebase.ENCODER_COUNTS_PER_FT)) < Robot.drivebase.allowableError;
   }
 
   // Called once after isFinished returns true

@@ -28,15 +28,21 @@ public class ArcadeDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double throttle = 0.9 - (0.55 * Robot.oi.getMainRightTrigger());
+    double throttle = 0.55 - (0.3 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
     SmartDashboard.putNumber("LeftJoy Y", Robot.oi.getMainLeftJoyY());
     SmartDashboard.putNumber("RightJoy X", Robot.oi.getMainRightJoyX());
+    
+    if (Robot.oi.getMainRightTrigger() > .5) {
+      turn *= 1.3;
+    }
+
     Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
 
     if (Robot.oi.getMainAButtonPressed()) {
-      cameraToggle = !cameraToggle;
-      NetworkTableInstance.getDefault().getEntry("CamID").setNumber(cameraToggle ? 0 : 1);
+      Robot.drivebase.resetEnc();
+      //cameraToggle = !cameraToggle;
+      //NetworkTableInstance.getDefault().getEntry("CamID").setNumber(cameraToggle ? 0 : 1);
     }
   }
 

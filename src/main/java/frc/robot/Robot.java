@@ -17,11 +17,13 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.ManualHatchControl;
 import frc.robot.subsystems.Hatch;
+import frc.robot.triggers.DrivetrainOverride;
 import frc.robot.subsystems.Drivebase;
 
 /**
@@ -39,6 +41,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivebase = new Drivebase();
     oi = new OI();
+    oi.init();
     hatch = new Hatch();
     hatchCam = CameraServer.getInstance().startAutomaticCapture(0);
     CameraServer.getInstance().addCamera(hatchCam);
@@ -74,9 +77,11 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    SmartDashboard.putNumber("LeftJoystick Y Axis", Robot.oi.getMainLeftJoyY());
-    SmartDashboard.putNumber("RightJoystick X Axis", Robot.oi.getMainRightJoyX());
-    SmartDashboard.putBoolean("A Button", Robot.oi.getMainAButton());
+    //SmartDashboard.putNumber("LeftJoystick Y Axis", Robot.oi.getMainLeftJoyY());
+    //SmartDashboard.putNumber("RightJoystick X Axis", Robot.oi.getMainRightJoyX());
+    //SmartDashboard.putBoolean("A Button", Robot.oi.getMainAButton());
+    SmartDashboard.putNumber("Left Encoder", Robot.drivebase.getLeftEnc());
+    SmartDashboard.putNumber("Right Encoder", Robot.drivebase.getRightEnc());
   }
 
   public static void masterTalon(TalonSRX motor) {

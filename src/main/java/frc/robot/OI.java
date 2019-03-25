@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DriveForward;
+import frc.robot.triggers.DrivetrainOverride;
 
 /**
  * Add your docs here.
@@ -19,18 +20,19 @@ public class OI {
 
     private static final double DEADZONE = 0.15 ;
   
-    private final Joystick MAIN_CONTROLLER;
-    private final JoystickButton XButton;
-    private final JoystickButton YButton;
-    private final Joystick ARM_CONTROLLER;
+    private Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
+    private JoystickButton XButton, YButton;
     private double value;
-    private final JoystickButton AButton;
-    private final JoystickButton BButton;
-    private final JoystickButton ArmLeftBumper;
-    private final JoystickButton ArmBButton;
+    private JoystickButton ArmBButton, ArmLeftBumper, AButton, BButton;
+    public DrivetrainOverride drivetrainOverride;
 
   
     public OI() { 
+      
+    }
+
+    public void init() {
+
       MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
       ARM_CONTROLLER = new Joystick(RobotMap.ARM_CONTROLLER.value);
   
@@ -40,7 +42,12 @@ public class OI {
       BButton = new JoystickButton(MAIN_CONTROLLER, 2);
       ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
       ArmBButton = new JoystickButton(ARM_CONTROLLER, 2);
+      drivetrainOverride = new DrivetrainOverride();
 
+      XButton.whenPressed(new DriveForward(10));
+      //XButton.whenReleased(new ArcadeDrive()); 
+  
+      drivetrainOverride.whileActive(new ArcadeDrive());
     }
   
     //Drivebase control

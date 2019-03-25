@@ -7,8 +7,10 @@
 
 package frc.robot.subsystems;
 
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -33,7 +35,12 @@ public class Drivebase extends Subsystem {
 
   private final double WHEEL_DIAMETER_IN = 8.0;
   private final int ENCODER_COUNTS_PER_REV = 4096;
-  public final double ENCODER_COUNTS_PER_FT = 15689.8;
+  public final double ENCODER_COUNTS_PER_FT = 9400;
+  private final double kP = 0.0;
+  private final double kI = -0.00;
+  private final double kD = 0.0;
+  private final double kF = .065;
+  public final int allowableError = 100;
   //in theory should equal: (ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN)
   
   public Drivebase () {
@@ -49,6 +56,20 @@ public class Drivebase extends Subsystem {
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
 
+    leftMotorOne.config_kP(0, kP);
+    leftMotorOne.config_kI(0, kI);
+    leftMotorOne.config_kD(0, kD);
+    leftMotorOne.config_kF(0, kF);
+    leftMotorOne.configAllowableClosedloopError(0, allowableError, 5000);
+    leftMotorOne.configMotionAcceleration(20000);
+    leftMotorOne.configMotionCruiseVelocity(15000);
+
+    rightMotorOne.config_kP(0, kP);
+    rightMotorOne.config_kI(0, kI);
+    rightMotorOne.config_kD(0, kD);
+    leftMotorOne.config_kF(0, kF);
+    rightMotorOne.configAllowableClosedloopError(0, allowableError, 5000);
+
     Robot.initVictor(leftMotorTwo);
     Robot.initVictor(leftMotorThree);
     Robot.initVictor(rightMotorTwo);
@@ -57,9 +78,11 @@ public class Drivebase extends Subsystem {
 
     rightMotorOne.setInverted(true);
 
+    //rightMotorTwo.setInverted(true);
     rightMotorThree.setInverted(true);
 
- 
+    //leftMotorTwo.setInverted(true);
+    //leftMotorThree.setInverted(true);
 
     leftMotorTwo.follow(leftMotorOne);
     leftMotorThree.follow(leftMotorOne);
@@ -79,9 +102,29 @@ public class Drivebase extends Subsystem {
     leftMotorOne.set(ControlMode.PercentOutput, left);
     rightMotorOne.set(ControlMode.PercentOutput, right);
   }
+
+  public void driveFeet(double feet) {
+    this.resetEnc();
+    leftMotorOne.set(ControlMode.MotionMagic, -feet * ENCODER_COUNTS_PER_FT);
+    rightMotorOne.follow(leftMotorOne);
+  }
+
+  public double getLeftEnc() {
+    return leftMotorOne.getSelectedSensorPosition();
+  }
+
+  public double getRightEnc() {
+    return rightMotorOne.getSelectedSensorPosition();
+  }
+
+  public void resetEnc() {
+    leftMotorOne.setSelectedSensorPosition(0);
+    rightMotorOne.setSelectedSensorPosition(0);
+  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new ArcadeDrive());
   }
 }
+
